@@ -1,11 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export default class Cell extends Component {
-  render() {
-    return (
-      <div>
-        
-      </div>
-    )
-  }
+export default function Cell() {
+  return (
+    <div className="cell">
+      a
+    </div>
+  )
 }
+

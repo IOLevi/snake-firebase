@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Cell from "./Cell"
 
 export default class Board extends Component {
 
@@ -24,18 +25,24 @@ export default class Board extends Component {
   }
 
   renderBoard = (data) => {
-    data.map(datarow => {
-      datarow.map(item => {
+    return data.map(datarow => {
+      return datarow.map(item => {
         // conditionally fill if sbody is true
-          // <Cell x={item.x} y={item.y}/>
-        console.log(`cell ${item.x} ${item.y}`);
+        return (
+          <div>
+            <Cell key={(item.x,item.y)} x={item.x} y={item.y}/>
+            {(datarow[datarow.length - 1] === item) ? <div className="clear" /> : ""}
+          </div>
+        )
     }) 
   })
 }
 
   render() {
     return (
-      this.renderBoard(this.state.board)
+      <div className="board">
+        {this.renderBoard(this.state.board)}
+      </div>
     )
   }
 }
