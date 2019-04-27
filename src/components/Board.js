@@ -6,13 +6,15 @@ export default class Board extends Component {
     super(props);
     this.state = {board: this.initBoard(),
     }
+    this.initBoard = this.initBoard.bind(this)
+    this.renderBoard = this.renderBoard.bind(this)
   }
 
   initBoard = () => {
     let data = [];
 
     for (let i = 0; i < this.props.height; i++) {
-      data[i].push([])
+      data.push([])
       for (let j = 0; j < this.props.width; j++) {
         data[i][j] = {x: i, y: j, sbody: false, food: false};
       }
@@ -25,13 +27,12 @@ export default class Board extends Component {
     data.map(datarow => {
       datarow.map(item => {
         // conditionally fill if sbody is true
-        <div>
-          <Cell x={item.x} y={item.y}/>
-        </div>
+          // <Cell x={item.x} y={item.y}/>
         console.log(`cell ${item.x} ${item.y}`);
-      }
     }) 
-  }
+  })
+}
+
   render() {
     return (
       this.renderBoard(this.state.board)
