@@ -4,8 +4,10 @@ import Cell from "./Cell"
 export default class Board extends Component {
 
   snake = [{ x: 2, y: 2 },
-    { x: 3, y: 2 },
-    { x: 4, y: 2 }];
+  { x: 3, y: 2 },
+  { x: 4, y: 2 }];
+
+  direction = "right";
 
   constructor(props) {
     super(props);
@@ -39,6 +41,30 @@ export default class Board extends Component {
     const newBoard = this.state.board.slice();
     newBoard[this.snake[0].x][this.snake[0].y].snakeBody = false;
     this.snake.shift();
+
+    // USE DIRECTION HERE
+    const target = this.snake[this.snake.length - 1]
+    switch (this.direction) {
+      case "right":
+        this.snake.push({ x: target.x, y: target.y + 1 });
+        newBoard[target.x][target.y + 1].snakeBody = true;
+        break;
+      case "left":
+        this.snake.push({ x: target.x, y: target.y - 1 });
+        newBoard[target.x][target.y - 1].snakeBody = true;
+        break;
+      case "up":
+        this.snake.push({ x: target.x - 1, y: target.y });
+        newBoard[target.x - 1][target.y].snakeBody = true;
+        break;
+      case "down":
+        this.snake.push({ x: target.x + 1, y: target.y });
+        newBoard[target.x + 1][target.y].snakeBody = true;
+        break;
+      default:
+        console.log("amy is gei");
+    }
+
     // for (let segment of this.state.snake) {
     //   newBoard[segment.x][segment.y].snakeBody = true;
     // }
@@ -50,23 +76,14 @@ export default class Board extends Component {
     for (let segment of this.snake) {
       newBoard[segment.x][segment.y].snakeBody = true;
     }
-    this.setState({board:newBoard});
-    
-  }
-
-  animateSnake = () => {
-    // const newSnake = Object.assign({}, this.state.snake, {x: this.state.snake.x + 1})
-    // const newSnake = this.state.snake.slice();
-    this.snake[0].y += 1;
-    // turn off the one before?!?!
-
-    // this.setState({snake: newSnake});
+    this.setState({ board: newBoard });
 
   }
 
   componentDidMount = () => {
     this.initSnake();
-    setInterval(this.renderSnake, 3000)
+    document.addEventListener("keydown", this.keyHandler, false);
+    setInterval(this.renderSnake, 5000)
   }
 
   renderBoard = (data) => {
@@ -82,6 +99,28 @@ export default class Board extends Component {
         )
       })
     })
+  }
+
+  keyHandler = (e) => {
+    // console.log(e.charCode);
+    // console.log(e.key);
+    switch (e.keyCode) {
+      case 37:
+        this.direction = "left";
+        break;
+      case 38:
+        this.direction = "up";
+        break;
+      case 39:
+        this.direction = "right";
+        break;
+      case 40:
+        this.direction = "down";
+        break;
+      default:
+        console.log("amy geiiii");
+    }
+    
   }
 
   render() {
