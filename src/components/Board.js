@@ -40,52 +40,61 @@ export default class Board extends Component {
     newBoard[this.snake[0].x][this.snake[0].y].snakeBody = false;
     this.snake.shift();
 
+    // switch (direction)
+    // push the new spot to the snake array
+    // check if new spot is out of bounds
+    // end()
+    // check if new spot is already filled with snake
+    // end()
+    // check if new spot is food
+    // food ? dont shift : shift
+
+
     // USE DIRECTION HERE
     const target = this.snake[this.snake.length - 1]
-    try {
-      switch (this.direction) {
-        case "right":
-          this.snake.push({ x: target.x, y: target.y + 1 });
-          if (newBoard[target.x][target.y + 1].snakeBody == true) {
-            throw "err";
-          }
-          else {
-            newBoard[target.x][target.y + 1].snakeBody = true;
-          }
-          break;
-        case "left":
-          this.snake.push({ x: target.x, y: target.y - 1 });
-          if (newBoard[target.x][target.y - 1].snakeBody == true) {
-            throw "err";
-          }
-          newBoard[target.x][target.y - 1].snakeBody = true;
-          break;
-        case "up":
-          this.snake.push({ x: target.x - 1, y: target.y });
-          if (newBoard[target.x - 1][target.y].snakeBody == true) {
-            throw "err";
-          }
-          newBoard[target.x - 1][target.y].snakeBody = true;
-          break;
-        case "down":
-          this.snake.push({ x: target.x + 1, y: target.y });
-          if (newBoard[target.x + 1][target.y].snakeBody == true) {
-            throw "err";
-          }
-          newBoard[target.x + 1][target.y].snakeBody = true;
-          break;
-        default:
-          console.log("");
-      }
+    switch (this.direction) {
+      case "right":
+        this.snake.push({ x: target.x, y: target.y + 1 });
+        break;
+      case "left":
+        this.snake.push({ x: target.x, y: target.y - 1 });
+        break;
+      case "up":
+        this.snake.push({ x: target.x - 1, y: target.y });
+        break;
+      case "down":
+        this.snake.push({ x: target.x + 1, y: target.y });
+        break;
+      default:
+        console.log("");
     }
-    catch (err) {
-      // reaches this when indexes are out of bounds
+
+    //check boundaries
+    let x = this.snake[this.snake.length - 1].x
+    let y = this.snake[this.snake.length - 1].y
+    console.log(x, y);
+    if (x < 0 || x > this.props.height - 1 || y < 0 || y > this.props.width - 1) {
+      console.log('here');
       this.setState({
         endGame: true
       })
     }
 
-    this.setState({ board: newBoard })
+    // check snake collision
+    else if (newBoard[x][y].snakeBody === true) {
+      this.setState({
+        endGame: true
+      })
+    }
+
+    else if (newBoard[x][y].food === true) {
+      // don't shift
+      // remove food and do other stuff
+    }
+    else {
+      newBoard[x][y].snakeBody = true;
+      this.setState({ board: newBoard })
+    }
   }
 
   initSnake = () => {
