@@ -32,14 +32,14 @@ export default class Board extends Component {
       }
 
     }
+    data[1][1].food = true;
     return data;
   }
 
   renderSnake = () => {
     const newBoard = this.state.board.slice();
     newBoard[this.snake[0].x][this.snake[0].y].snakeBody = false;
-    this.snake.shift();
-
+    
     // switch (direction)
     // push the new spot to the snake array
     // check if new spot is out of bounds
@@ -48,27 +48,27 @@ export default class Board extends Component {
     // end()
     // check if new spot is food
     // food ? dont shift : shift
-
-
+    
+    
     // USE DIRECTION HERE
     const target = this.snake[this.snake.length - 1]
     switch (this.direction) {
       case "right":
-        this.snake.push({ x: target.x, y: target.y + 1 });
-        break;
+      this.snake.push({ x: target.x, y: target.y + 1 });
+      break;
       case "left":
-        this.snake.push({ x: target.x, y: target.y - 1 });
-        break;
+      this.snake.push({ x: target.x, y: target.y - 1 });
+      break;
       case "up":
-        this.snake.push({ x: target.x - 1, y: target.y });
-        break;
+      this.snake.push({ x: target.x - 1, y: target.y });
+      break;
       case "down":
-        this.snake.push({ x: target.x + 1, y: target.y });
-        break;
+      this.snake.push({ x: target.x + 1, y: target.y });
+      break;
       default:
-        console.log("");
+      console.log("");
     }
-
+    
     //check boundaries
     let x = this.snake[this.snake.length - 1].x
     let y = this.snake[this.snake.length - 1].y
@@ -79,19 +79,28 @@ export default class Board extends Component {
         endGame: true
       })
     }
-
+    
     // check snake collision
     else if (newBoard[x][y].snakeBody === true) {
       this.setState({
         endGame: true
       })
     }
-
+    
+    // check food
     else if (newBoard[x][y].food === true) {
       // don't shift
-      // remove food and do other stuff
+      newBoard[x][y].food = false;
+      newBoard[x][y].snakeBody= true;
+      let {nx, ny} = this.newFoodLocation(newBoard);
+      newBoard[nx][ny].food = true;
+      // food = false
+      // snakeBody = true
+      // modify newboard with new food location
+      this.setState({board: newBoard})
     }
     else {
+      this.snake.shift();
       newBoard[x][y].snakeBody = true;
       this.setState({ board: newBoard })
     }
@@ -106,10 +115,26 @@ export default class Board extends Component {
 
   }
 
+  newFoodLocation = (board) => {
+    // get a random x and y
+    // if collision with snake, repeat until viable
+    // return the x, y coordinates OR just modify board with side effect
+    let x = Math.floor(Math.random() * this.props.height);
+    let y = Math.floor(Math.random() * this.props.width);
+    
+    while (board[x][y].snakeBody) {
+      x = Math.floor(Math.random() * this.props.height);
+      y = Math.floor(Math.random() * this.props.width);
+    }
+
+    return {nx: x, ny: y};
+    
+  }
+
   componentDidMount = () => {
     this.initSnake();
     document.addEventListener("keydown", this.keyHandler, false);
-    this.intervalID = setInterval(this.renderSnake, 500)
+    this.intervalID = setInterval(this.renderSnake, 100)
   }
 
   renderBoard = (data) => {
