@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Cell from "./Cell"
-import EndGame from "./EndGame"
 
 export default class Board extends Component {
 
@@ -16,7 +15,6 @@ export default class Board extends Component {
     super(props);
     this.state = {
       board: this.initBoard(),
-      endGame: false,
     }
     this.initBoard = this.initBoard.bind(this)
     this.renderBoard = this.renderBoard.bind(this)
@@ -75,16 +73,12 @@ export default class Board extends Component {
     console.log(x, y);
     if (x < 0 || x > this.props.height - 1 || y < 0 || y > this.props.width - 1) {
       console.log('here');
-      this.setState({
-        endGame: true
-      })
+      this.props.gameOver()
     }
     
     // check snake collision
     else if (newBoard[x][y].snakeBody === true) {
-      this.setState({
-        endGame: true
-      })
+      this.props.gameOver()
     }
     
     // check food
@@ -181,17 +175,11 @@ export default class Board extends Component {
     this.preventReverse()
   }
 
-  endSplash = () => {
+  componentWillUnmount = () => {
     clearInterval(this.intervalID);
-    return <EndGame />
   }
 
   render() {
-    if (this.state.endGame) {
-      return (this.endSplash())
-    }
-    else {
       return (this.renderBoard(this.state.board))
-    }
   }
 }
