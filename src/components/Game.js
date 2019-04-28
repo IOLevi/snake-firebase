@@ -4,7 +4,7 @@ import Board from "./Board"
 export default class Game extends Component {
   constructor(props) {
     super(props);
-    this.state = { height: 6, width: 6 };
+    this.state = { height: 10, width: 10 };
   }
 
   render() {

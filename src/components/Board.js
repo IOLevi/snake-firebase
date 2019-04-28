@@ -13,11 +13,9 @@ export default class Board extends Component {
     super(props);
     this.state = {
       board: this.initBoard(),
-      // snake: this.initSnake(),
     }
     this.initBoard = this.initBoard.bind(this)
     this.renderBoard = this.renderBoard.bind(this)
-    // this.initSnake = this.initSnake.bind(this)
   }
 
   initBoard = () => {
@@ -30,13 +28,9 @@ export default class Board extends Component {
       }
 
     }
-    // this.staticSnake(data);
-    console.log(data)
     return data;
   }
 
-  // how to do this with a set state instead of looping and 
-  // changing this way
   renderSnake = () => {
     const newBoard = this.state.board.slice();
     newBoard[this.snake[0].x][this.snake[0].y].snakeBody = false;
@@ -62,12 +56,9 @@ export default class Board extends Component {
         newBoard[target.x + 1][target.y].snakeBody = true;
         break;
       default:
-        console.log("amy is gei");
+        console.log("");
     }
 
-    // for (let segment of this.state.snake) {
-    //   newBoard[segment.x][segment.y].snakeBody = true;
-    // }
     this.setState({ board: newBoard })
   }
 
@@ -83,13 +74,12 @@ export default class Board extends Component {
   componentDidMount = () => {
     this.initSnake();
     document.addEventListener("keydown", this.keyHandler, false);
-    setInterval(this.renderSnake, 5000)
+    setInterval(this.renderSnake, 500)
   }
 
   renderBoard = (data) => {
     return data.map(datarow => {
       return datarow.map(item => {
-        // conditionally fill if sbody is true
         return (
           <div key={(item.x, item.y)}>
 
@@ -102,8 +92,6 @@ export default class Board extends Component {
   }
 
   keyHandler = (e) => {
-    // console.log(e.charCode);
-    // console.log(e.key);
     switch (e.keyCode) {
       case 37:
         this.direction = "left";
@@ -118,7 +106,7 @@ export default class Board extends Component {
         this.direction = "down";
         break;
       default:
-        console.log("amy geiiii");
+        console.log("");
     }
     
   }
