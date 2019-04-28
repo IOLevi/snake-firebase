@@ -8,6 +8,7 @@ export default class Board extends Component {
   { x: 4, y: 2 }];
 
   direction = "right";
+  prevDirection = "right";
 
   constructor(props) {
     super(props);
@@ -91,7 +92,19 @@ export default class Board extends Component {
     })
   }
 
+  isReverse = () => {
+    // check for opposite direction of keypress
+    const opposites = {'left': 'right', 'right': 'left', 'up': 'down', 'down': 'up'};
+    console.log(this.direction, this.prevDirection)
+
+    if (opposites[this.direction] === this.prevDirection) {
+      console.log('hey')
+      this.direction = this.prevDirection;
+    }
+  }
+
   keyHandler = (e) => {
+    this.prevDirection = this.direction
     switch (e.keyCode) {
       case 37:
         this.direction = "left";
@@ -108,7 +121,7 @@ export default class Board extends Component {
       default:
         console.log("");
     }
-    
+    this.isReverse()
   }
 
   render() {
