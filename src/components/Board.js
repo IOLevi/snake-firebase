@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Cell from "./Cell"
+import EndGame from "./EndGame"
 
 export default class Board extends Component {
 
@@ -9,11 +10,13 @@ export default class Board extends Component {
 
   direction = "right";
   prevDirection = "right";
+  intervalID = null;
 
   constructor(props) {
     super(props);
     this.state = {
       board: this.initBoard(),
+      endGame: false,
     }
     this.initBoard = this.initBoard.bind(this)
     this.renderBoard = this.renderBoard.bind(this)
@@ -39,25 +42,32 @@ export default class Board extends Component {
 
     // USE DIRECTION HERE
     const target = this.snake[this.snake.length - 1]
-    switch (this.direction) {
-      case "right":
-        this.snake.push({ x: target.x, y: target.y + 1 });
-        newBoard[target.x][target.y + 1].snakeBody = true;
-        break;
-      case "left":
-        this.snake.push({ x: target.x, y: target.y - 1 });
-        newBoard[target.x][target.y - 1].snakeBody = true;
-        break;
-      case "up":
-        this.snake.push({ x: target.x - 1, y: target.y });
-        newBoard[target.x - 1][target.y].snakeBody = true;
-        break;
-      case "down":
-        this.snake.push({ x: target.x + 1, y: target.y });
-        newBoard[target.x + 1][target.y].snakeBody = true;
-        break;
-      default:
-        console.log("");
+    try {
+      switch (this.direction) {
+        case "right":
+          this.snake.push({ x: target.x, y: target.y + 1 });
+          newBoard[target.x][target.y + 1].snakeBody = true;
+          break;
+        case "left":
+          this.snake.push({ x: target.x, y: target.y - 1 });
+          newBoard[target.x][target.y - 1].snakeBody = true;
+          break;
+        case "up":
+          this.snake.push({ x: target.x - 1, y: target.y });
+          newBoard[target.x - 1][target.y].snakeBody = true;
+          break;
+        case "down":
+          this.snake.push({ x: target.x + 1, y: target.y });
+          newBoard[target.x + 1][target.y].snakeBody = true;
+          break;
+        default:
+          console.log("");
+      }
+    }
+    catch (err) {
+      this.setState({
+        endGame: true
+      })
     }
 
     this.setState({ board: newBoard })
@@ -75,7 +85,7 @@ export default class Board extends Component {
   componentDidMount = () => {
     this.initSnake();
     document.addEventListener("keydown", this.keyHandler, false);
-    setInterval(this.renderSnake, 500)
+    this.intervalID = setInterval(this.renderSnake, 500)
   }
 
   renderBoard = (data) => {
@@ -92,13 +102,11 @@ export default class Board extends Component {
     })
   }
 
-  isReverse = () => {
+  preventReverse = () => {
     // check for opposite direction of keypress
-    const opposites = {'left': 'right', 'right': 'left', 'up': 'down', 'down': 'up'};
-    console.log(this.direction, this.prevDirection)
+    const opposites = { 'left': 'right', 'right': 'left', 'up': 'down', 'down': 'up' };
 
     if (opposites[this.direction] === this.prevDirection) {
-      console.log('hey')
       this.direction = this.prevDirection;
     }
   }
@@ -121,14 +129,20 @@ export default class Board extends Component {
       default:
         console.log("");
     }
-    this.isReverse()
+    this.preventReverse()
+  }
+
+  endSplash = () => {
+    clearInterval(this.intervalID);
+    return <EndGame />
   }
 
   render() {
-    return (
-      <div className="board">
-        {this.renderBoard(this.state.board)}
-      </div>
-    )
+    if (this.state.endGame) {
+      return (this.endSplash())
+    }
+    else {
+      return (this.renderBoard(this.state.board))
+    }
   }
 }
