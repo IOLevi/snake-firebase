@@ -6,7 +6,7 @@ export default class Board extends Component {
 
   snake = [{ x: 2, y: 2 },
   { x: 3, y: 2 },
-  { x: 4, y: 2 }];
+  { x: 4, y: 2 }, { x: 5, y: 2 }, { x: 6, y: 2 }];
 
   direction = "right";
   prevDirection = "right";
@@ -46,18 +46,32 @@ export default class Board extends Component {
       switch (this.direction) {
         case "right":
           this.snake.push({ x: target.x, y: target.y + 1 });
-          newBoard[target.x][target.y + 1].snakeBody = true;
+          if (newBoard[target.x][target.y + 1].snakeBody == true) {
+            throw "err";
+          }
+          else {
+            newBoard[target.x][target.y + 1].snakeBody = true;
+          }
           break;
         case "left":
           this.snake.push({ x: target.x, y: target.y - 1 });
+          if (newBoard[target.x][target.y - 1].snakeBody == true) {
+            throw "err";
+          }
           newBoard[target.x][target.y - 1].snakeBody = true;
           break;
         case "up":
           this.snake.push({ x: target.x - 1, y: target.y });
+          if (newBoard[target.x - 1][target.y].snakeBody == true) {
+            throw "err";
+          }
           newBoard[target.x - 1][target.y].snakeBody = true;
           break;
         case "down":
           this.snake.push({ x: target.x + 1, y: target.y });
+          if (newBoard[target.x + 1][target.y].snakeBody == true) {
+            throw "err";
+          }
           newBoard[target.x + 1][target.y].snakeBody = true;
           break;
         default:
@@ -65,6 +79,7 @@ export default class Board extends Component {
       }
     }
     catch (err) {
+      // reaches this when indexes are out of bounds
       this.setState({
         endGame: true
       })
