@@ -29,6 +29,30 @@ body {
   cursor: pointer;
 }
 
+.cell-snake {
+  border: 1px solid #414c69;
+  float: left;
+  line-height: 34px;
+  height: 34px;
+  text-align: center;
+  width: 34px;
+  cursor: pointer;
+  background: black;
+
+}
+
+.cell-food {
+  background: yellow;
+  border: 1px solid #414c69;
+  float: left;
+  line-height: 34px;
+  height: 34px;
+  text-align: center;
+  width: 34px;
+  cursor: pointer;
+
+}
+
 .cell:focus {
   outline: none;
 }
