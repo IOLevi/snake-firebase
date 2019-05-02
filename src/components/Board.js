@@ -10,11 +10,14 @@ export default class Board extends Component {
   direction = "right";
   prevDirection = "right";
   intervalID = null;
+  foodPos = {x:1, y:1}
 
   constructor(props) {
     super(props);
     this.state = {
       board: this.initBoard(),
+      // history also needs direction i think
+      history: [{snake: this.snake.slice(), food: {x:1, y:1}}]
     }
     this.initBoard = this.initBoard.bind(this)
     this.renderBoard = this.renderBoard.bind(this)
@@ -70,10 +73,24 @@ export default class Board extends Component {
     //check boundaries
     let x = this.snake[this.snake.length - 1].x
     let y = this.snake[this.snake.length - 1].y
-    console.log(x, y);
+    // console.log(x, y);
     if (x < 0 || x > this.props.height - 1 || y < 0 || y > this.props.width - 1) {
       console.log('here');
-      this.props.gameOver()
+      const newBoard = this.state.board.slice()
+      for (let i = 0; i < this.snake.length - 1; i++) {
+        newBoard[this.snake[i].x][this.snake[i].y].snakeBody = false;
+      }
+      
+      for (let segment of this.state.history[this.state.history.length-4].snake) {
+        newBoard[segment.x][segment.y].snakeBody = true
+      }
+      this.snake = this.state.history[this.state.history.length-4].snake.slice()
+      const oldFood = this.state.history[this.state.history.length-4].food
+      newBoard[oldFood.x][oldFood.y].food = true
+      this.foodPos = {x:oldFood.x, y:oldFood.y}
+      this.setState({ board: newBoard });
+      // console.log(this.state.history)
+      // this.props.gameOver()
     }
     
     // check snake collision
@@ -88,15 +105,20 @@ export default class Board extends Component {
       newBoard[x][y].snakeBody= true;
       let {nx, ny} = this.newFoodLocation(newBoard);
       newBoard[nx][ny].food = true;
+      this.foodPos = {x:nx, y:ny};
       // food = false
       // snakeBody = true
       // modify newboard with new food location
-      this.setState({board: newBoard})
+      const historyUpdate = this.state.history.slice()
+      historyUpdate.push({snake: this.snake.slice(), food: this.foodPos})
+      this.setState({ board: newBoard, history: historyUpdate })
     }
     else {
       this.snake.shift();
       newBoard[x][y].snakeBody = true;
-      this.setState({ board: newBoard })
+      const historyUpdate = this.state.history.slice()
+      historyUpdate.push({snake: this.snake.slice(), food: this.foodPos})
+      this.setState({ board: newBoard, history: historyUpdate })
     }
   }
 
