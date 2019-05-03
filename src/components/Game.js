@@ -6,10 +6,28 @@ import firebase from '../firebase'
 export default class Game extends Component {
   constructor(props) {
     super(props);
-    this.state = { height: 10, width: 10, endGame: false, score: 0};
+    this.state = { height: 10, width: 10, endGame: false, score: 0, userScoreBoard: [], isSubmit: false};
     this.gameOver = this.gameOver.bind(this.gameOver)
     this.gameRestart = this.gameRestart.bind(this.gameRestart)
     this.handleSubmit = this.handleSubmit.bind(this.handleSubmit)
+  }
+  
+  componentDidMount() {
+    const usersRef = firebase.database().ref('users')
+    usersRef.on('value', (snapshot) => {
+      let users = snapshot.val();
+      let newState = [];
+      for (let user in users) {
+        newState.push({
+          user: users[user].user,
+          score: users[user].score,
+        })
+      }
+      this.setState({
+        userScoreBoard: newState
+      })
+      console.log(this.state.userScoreBoard)
+    })
   }
 
   gameOver = () => {
@@ -37,14 +55,16 @@ export default class Game extends Component {
     const userRef = firebase.database().ref('users')
     const user = {
       user: e.target[0].value,
-      score: this.state.score
+      score: this.state.score,
+      // isSubmit: true,
     }
     userRef.push(user)
+    this.setState({isSubmit: true})
   }
 
   render() {
     if (this.state.endGame) {
-      return <EndGame gameRestart={this.gameRestart} handleSubmit={this.handleSubmit} score={this.state.score}/>
+      return <EndGame gameRestart={this.gameRestart} handleSubmit={this.handleSubmit} score={this.state.score} userScoreBoard={this.state.userScoreBoard} isSubmit={this.state.isSubmit}/>
     }
     else {
       return <Board height={this.state.height} width={this.state.width} gameOver={this.gameOver} trackScore={this.trackScore} score={this.state.score}/>}
