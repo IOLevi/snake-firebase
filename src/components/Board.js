@@ -76,7 +76,44 @@ export default class Board extends Component {
     // console.log(x, y);
     if (x < 0 || x > this.props.height - 1 || y < 0 || y > this.props.width - 1) {
       console.log('here');
-      const newBoard = this.state.board.slice()
+      this.props.gameOver()
+    }
+    
+    // check snake collision
+    else if (newBoard[x][y].snakeBody === true) {
+      //rewind()
+      this.props.gameOver()
+    }
+    
+    // check food
+    else if (newBoard[x][y].food === true) {
+      // don't shift
+      // modify newboard with new food location
+      newBoard[x][y].food = false;
+      newBoard[x][y].snakeBody= true;
+      let {nx, ny} = this.newFoodLocation(newBoard);
+      newBoard[nx][ny].food = true;
+      this.foodPos = {x:nx, y:ny};
+      // food = false
+      // snakeBody = true
+      // modify newboard with new food location
+      const historyUpdate = this.state.history.slice()
+      historyUpdate.push({snake: this.snake.slice(), food: this.foodPos})
+      this.setState({ board: newBoard, history: historyUpdate })
+      this.props.trackScore(this.props.score)
+    }
+
+    else {
+      this.snake.shift();
+      newBoard[x][y].snakeBody = true;
+      const historyUpdate = this.state.history.slice()
+      historyUpdate.push({snake: this.snake.slice(), food: this.foodPos})
+      this.setState({ board: newBoard, history: historyUpdate })
+    }
+  }
+
+  rewind = () => {
+    const newBoard = this.state.board.slice()
       for (let i = 0; i < this.snake.length - 1; i++) {
         newBoard[this.snake[i].x][this.snake[i].y].snakeBody = false;
       }
@@ -89,37 +126,6 @@ export default class Board extends Component {
       newBoard[oldFood.x][oldFood.y].food = true
       this.foodPos = {x:oldFood.x, y:oldFood.y}
       this.setState({ board: newBoard });
-      // console.log(this.state.history)
-      // this.props.gameOver()
-    }
-    
-    // check snake collision
-    else if (newBoard[x][y].snakeBody === true) {
-      this.props.gameOver()
-    }
-    
-    // check food
-    else if (newBoard[x][y].food === true) {
-      // don't shift
-      newBoard[x][y].food = false;
-      newBoard[x][y].snakeBody= true;
-      let {nx, ny} = this.newFoodLocation(newBoard);
-      newBoard[nx][ny].food = true;
-      this.foodPos = {x:nx, y:ny};
-      // food = false
-      // snakeBody = true
-      // modify newboard with new food location
-      const historyUpdate = this.state.history.slice()
-      historyUpdate.push({snake: this.snake.slice(), food: this.foodPos})
-      this.setState({ board: newBoard, history: historyUpdate })
-    }
-    else {
-      this.snake.shift();
-      newBoard[x][y].snakeBody = true;
-      const historyUpdate = this.state.history.slice()
-      historyUpdate.push({snake: this.snake.slice(), food: this.foodPos})
-      this.setState({ board: newBoard, history: historyUpdate })
-    }
   }
 
   initSnake = () => {
