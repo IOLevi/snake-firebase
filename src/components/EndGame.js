@@ -9,6 +9,9 @@ export default class EndGame extends Component {
     return (
       <div>
         Game Over
+        <br />
+        <br />
+        Total Score: {this.props.score}
         <button onClick={this.props.gameRestart}></button>
       </div>
     )

@@ -84,15 +84,15 @@ export default class Board extends Component {
     // check food
     else if (newBoard[x][y].food === true) {
       // don't shift
+      // modify newboard with new food location
       newBoard[x][y].food = false;
       newBoard[x][y].snakeBody= true;
       let {nx, ny} = this.newFoodLocation(newBoard);
       newBoard[nx][ny].food = true;
-      // food = false
-      // snakeBody = true
-      // modify newboard with new food location
       this.setState({board: newBoard})
+      this.props.trackScore(this.props.score)
     }
+
     else {
       this.snake.shift();
       newBoard[x][y].snakeBody = true;
