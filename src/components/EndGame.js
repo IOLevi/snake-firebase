@@ -8,9 +8,10 @@ export default class EndGame extends Component {
         <br />
         <br />
         Total Score: {this.props.score}
-        <form onSubmit={this.props.onSubmit}>
+        <form onSubmit={this.props.handleSubmit}>
           Submit Username:
-          <input type="text"/>
+          <input type="text" name="user" />
+          <button type="submit">Submituu</button>
         </form>
         
         <button onClick={this.props.gameRestart}></button>
