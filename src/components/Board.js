@@ -128,14 +128,14 @@ export default class Board extends Component {
   componentDidMount = () => {
     this.initSnake();
     document.addEventListener("keydown", this.keyHandler, false);
-    this.intervalID = setInterval(this.renderSnake, 100)
+    this.intervalID = setInterval(this.renderSnake, 500)
   }
 
   renderBoard = (data) => {
     return data.map(datarow => {
       return datarow.map(item => {
         return (
-          <div key={(item.x, item.y)}>
+          <div key={(item.x, item.y)} className="game-board">
 
             <Cell x={item.x} y={item.y} snakeBody={item.snakeBody} food={item.food} />
             {(datarow[datarow.length - 1] === item) ? <div className="clear" /> : ""}
