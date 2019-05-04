@@ -13,7 +13,7 @@ export default class UserScoreBoard extends Component {
     // console.log(element)
     return (
         <ul>
-            {this.props.scores.map((score) =>
+            {this.props.scores.sort((score1, score2) => score2.score - score1.score).map((score) =>
               <li>{score.user} | {score.score}</li>
             )}
         </ul>
