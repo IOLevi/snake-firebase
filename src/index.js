@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Game from './components/Game'
 import * as serviceWorker from './serviceWorker';
+import 'typeface-roboto'
 
 ReactDOM.render(<Game />, document.getElementById('root'));
 

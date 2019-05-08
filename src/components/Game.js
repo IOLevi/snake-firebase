@@ -51,7 +51,7 @@ export default class Game extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log(e.target[0].value)
+    console.log(e.target[0])
     const userRef = firebase.database().ref('users')
     const user = {
       user: e.target[0].value,
