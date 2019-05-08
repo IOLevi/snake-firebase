@@ -29,7 +29,7 @@ export default class EndGame extends Component {
           <Typography variant='body1'>
           Total Score: {this.props.score}
           </Typography>
-          <form variant="outlined" required="true" onSubmit={this.props.handleSubmit}>
+          <form variant="outlined" onSubmit={this.props.handleSubmit}>
             {/* <InputLabel htmlFor="user-submit">
             Submit Username
             </InputLabel>

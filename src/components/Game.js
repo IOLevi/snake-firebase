@@ -26,7 +26,7 @@ export default class Game extends Component {
       this.setState({
         userScoreBoard: newState
       })
-      console.log(this.state.userScoreBoard)
+      // console.log(this.state.userScoreBoard)
     })
   }
 
@@ -46,12 +46,12 @@ export default class Game extends Component {
     this.setState({
       score: currentScore += 1,
     })
-    console.log(this.state.score)
+    // console.log(this.state.score)
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log(e.target[0])
+    console.log(e.target[0].value)
     const userRef = firebase.database().ref('users')
     const user = {
       user: e.target[0].value,

@@ -75,7 +75,7 @@ export default class Board extends Component {
     let y = this.snake[this.snake.length - 1].y
     // console.log(x, y);
     if (x < 0 || x > this.props.height - 1 || y < 0 || y > this.props.width - 1) {
-      console.log('here');
+      // console.log('here');
       this.props.gameOver()
     }
     
@@ -156,7 +156,7 @@ export default class Board extends Component {
   componentDidMount = () => {
     this.initSnake();
     document.addEventListener("keydown", this.keyHandler, false);
-    this.intervalID = setInterval(this.renderSnake, 500)
+    this.intervalID = setInterval(this.renderSnake, 250)
   }
 
   renderBoard = (data) => {
