@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import Typography from "@material-ui/core/Typography"
 export default class UserScoreBoard extends Component {
 
   render() {
@@ -14,7 +14,11 @@ export default class UserScoreBoard extends Component {
     return (
         <ul>
             {this.props.scores.sort((score1, score2) => score2.score - score1.score).map((score, index) =>
-              <li key={index}>{score.user} | {score.score}</li>
+              <li key={index}>
+              <Typography> 
+                  {score.user} | {score.score}
+              </Typography>
+              </li>
             )}
         </ul>
     )
