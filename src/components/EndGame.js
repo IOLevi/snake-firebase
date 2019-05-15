@@ -14,7 +14,9 @@ export default class EndGame extends Component {
       return (
       <div>
         <UserScoreBoard isSubmit={this.props.isSubmit} scores={this.props.userScoreBoard}/>
-        <button onClick={this.props.gameRestart}>Play Again</button>
+        {/* <button onClick={this.props.gameRestart}>Play Again</button> */}
+        <Button variant="contained" color="primary" onClick={this.props.gameRestart}>Play Again</Button>
+
       </div>
       )
     } 

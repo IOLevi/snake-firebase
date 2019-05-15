@@ -2,8 +2,13 @@ import React, { Component } from 'react'
 import Board from "./Board"
 import EndGame from "./EndGame"
 import firebase from '../firebase'
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles'
+import { CssBaseline } from '@material-ui/core';
 
+const theme = createMuiTheme();
 export default class Game extends Component {
+  
+  
   constructor(props) {
     super(props);
     this.state = { height: 10, width: 10, endGame: false, score: 0, userScoreBoard: [], isSubmit: false};
@@ -64,9 +69,17 @@ export default class Game extends Component {
 
   render() {
     if (this.state.endGame) {
-      return <EndGame gameRestart={this.gameRestart} handleSubmit={this.handleSubmit} score={this.state.score} userScoreBoard={this.state.userScoreBoard} isSubmit={this.state.isSubmit}/>
-    }
+      return (
+        <MuiThemeProvider theme={theme} >
+          <EndGame gameRestart={this.gameRestart} handleSubmit={this.handleSubmit} score={this.state.score} userScoreBoard={this.state.userScoreBoard} isSubmit={this.state.isSubmit}/>
+        </MuiThemeProvider>
+      )}
     else {
-      return <Board height={this.state.height} width={this.state.width} gameOver={this.gameOver} trackScore={this.trackScore} score={this.state.score}/>}
-    }
+      return (
+        <MuiThemeProvider theme={theme}>
+          {/* <CssBaseline /> */}
+          <Board height={this.state.height} width={this.state.width} gameOver={this.gameOver} trackScore={this.trackScore} score={this.state.score}/>
+        </MuiThemeProvider>
+      )}
+  }
 }
