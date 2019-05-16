@@ -1,3 +1,15 @@
+##Snake-Firebase Project
+
+### About
+Classic snake game, bootstrapped with Create React App and connected to Firebase for persistent storage of scores (arcade style). The scoreboard is reactive, and changes to the database will live push the update to every client.
+
+### Authors
+Amy Tai
+Evan Sznol
+
+-----------
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
