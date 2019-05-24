@@ -44,6 +44,7 @@ export default class Game extends Component {
   gameRestart = () => {
     this.setState({
       endGame: false,
+      isSubmit: false,
     })
   }
 
